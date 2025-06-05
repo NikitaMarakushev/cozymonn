@@ -7,3 +7,7 @@
 - values
 - install_and_validate.sh
 - templates
+
+0.0.3
+- Fixes problem with grafana dashboard provisioning
+
