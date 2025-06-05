@@ -1,0 +1,5 @@
+apiVersion: v2
+name: cozymonn
+description: Monitoring stack with Prometheus, Grafana, Node Exporter and cAdvisor
+version: 0.1.0
+appVersion: "1.0"
