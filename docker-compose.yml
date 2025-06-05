@@ -31,15 +31,17 @@ services:
 
   node_exporter:
     image: prom/node-exporter
-    container_name: node_exporter
-    command:
-      - '--path.rootfs=/host'
+    ports: ["9100:9100"]
     volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
-      - '/sys:/sys:ro'
-      - '/:/rootfs:ro'
-    ports:
-      - "9100:9100"
+      - /mnt/wsl:/mnt/wsl:ro  # WSL2-specific mount
+      - /sys:/sys:ro          # Системные метрики
+      - /proc:/host/proc:ro   # Процессы
+      - /run:/run:ro          # Runtime данные
+    command:
+      - "--path.rootfs=/mnt/wsl"
+      - "--collector.wifi"
+      - "--no-collector.hwmon" # Отключаем проблемные коллекторы
+    privileged: truec
     restart: unless-stopped
 
   cadvisor:
