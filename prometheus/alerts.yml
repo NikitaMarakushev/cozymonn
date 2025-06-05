@@ -7,8 +7,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "High CPU usage on {{ $labels.instance }}"
-          description: "CPU is at {{ $value }}% for 5 minutes."
+          summary: "High CPU on {{ $labels.instance }}"
+          description: "CPU at {{ $value }}% for 5m."
 
       - alert: LowMemory
         expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
@@ -17,4 +17,4 @@ groups:
           severity: critical
         annotations:
           summary: "Low memory on {{ $labels.instance }}"
-          description: "Only {{ $value }}% memory left."
+          description: "Only {{ $value }}% left."
