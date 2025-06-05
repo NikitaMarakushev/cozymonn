@@ -19,8 +19,9 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning
     environment:
       GF_SECURITY_ADMIN_PASSWORD: "admin123"
-      GF_PATHS_PROVISIONING: "/etc/grafana/provisioning"
-      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_AUTH_DISABLE_LOGIN_FORM: "false"
+      GF_LOG_LEVEL: "info"
     user: "472:472"  # Важно для прав доступа
     restart: unless-stopped
     depends_on:
