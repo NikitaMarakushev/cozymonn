@@ -1,9 +1,13 @@
-```docker-compose up -d```
+Run:
+```docker compose up -d```
 
-sudo mkdir -p /mnt/wsl
-sudo mount --bind / /mnt/wsl
-sudo mount --make-shared /mnt/wsl
+Check status:
+```docker compose ps -a```
+![img.png](img.png)
 
-/etc/wsl.conf
-[automount]
-options = "metadata,umask=22,fmask=11"c
+Access UI:
+Prometheus: http://localhost:9090/targets
+
+Grafana: http://localhost:3000 (admin/admin123)
+
+Node Exporter: http://localhost:9c100/metrics

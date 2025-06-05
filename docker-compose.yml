@@ -1,66 +1,57 @@
-version: '3.8'
-
 services:
   prometheus:
     image: prom/prometheus
-    container_name: prometheus
-    ports:
-      - "9090:9090"
+    ports: ["9090:9090"]
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--web.enable-lifecycle'
+      - type: bind
+        source: ./prometheus
+        target: /etc/prometheus
     restart: unless-stopped
-    depends_on:
-      - node_exporter
-      - cadvisor
 
   grafana:
     image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3000:3000"
+    ports: ["3000:3000"]
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
-      - grafana-storage:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
+      - type: bind
+        source: ./grafana/provisioning
+        target: /etc/grafana/provisioning
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      GF_SECURITY_ADMIN_PASSWORD: "admin123"
     restart: unless-stopped
 
   node_exporter:
     image: prom/node-exporter
     ports: ["9100:9100"]
     volumes:
-      - /mnt/wsl:/mnt/wsl:ro  # WSL2-specific mount
-      - /sys:/sys:ro          # Системные метрики
-      - /proc:/host/proc:ro   # Процессы
-      - /run:/run:ro          # Runtime данные
+      - type: bind
+        source: /sys
+        target: /host/sys
+        read_only: true
+      - type: bind
+        source: /proc
+        target: /host/proc
+        read_only: true
+      - type: bind
+        source: /run
+        target: /host/run
+        read_only: true
     command:
-      - "--path.rootfs=/mnt/wsl"
+      - "--path.rootfs=/host"
       - "--collector.wifi"
-      - "--no-collector.hwmon" # Отключаем проблемные коллекторы
-    privileged: truec
-    restart: unless-stopped
-
-  cadvisor:
-    image: google/cadvisor
-    container_name: cadvisor
-    ports:
-      - "8080:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
+      - "--no-collector.hwmon"
+    privileged: true
     restart: unless-stopped
 
   alertmanager:
     image: prom/alertmanager
+    volumes:
+      - type: volume
+        source: alertmanager-config
+        target: /etc/alertmanager
     ports:
       - "9093:9093"
-    volumes:
-      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
 volumes:
-  grafana-storage:
+  grafana-data:
+  alertmanager-config:
