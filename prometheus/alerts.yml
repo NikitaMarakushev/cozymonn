@@ -1,0 +1,20 @@
+groups:
+  - name: host_alerts
+    rules:
+      - alert: HighCPU
+        expr: 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU is at {{ $value }}% for 5 minutes."
+
+      - alert: LowMemory
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100 < 10
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Low memory on {{ $labels.instance }}"
+          description: "Only {{ $value }}% memory left."
