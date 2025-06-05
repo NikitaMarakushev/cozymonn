@@ -12,7 +12,9 @@ Prometheus: http://localhost:9090/targets
 
 Grafana: http://localhost:3000 (admin/admin123)
 
-Node Exporter: http://localhost:9c100/metrics
+Node Exporter: http://localhost:9100/metrics
+
+![img1.png](readme_images/img1.png)
 
 2) using vagrant:
 ```vagrant up```
