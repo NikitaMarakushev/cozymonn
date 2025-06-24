@@ -25,3 +25,10 @@ Node Exporter: http://localhost:9100/metrics
 
 2) using vagrant:
 ```vagrant up```
+
+Install Windows Exporter (allow connections for 9182 port):
+1) ```msiexec /i windows_exporter-0.24.0-amd64.msi ENABLED_COLLECTORS="cpu,memory,net" LISTEN_PORT=9182```
+2) edit `windows_targets.yml`
+
+Or install using ansible:
+```ansible-playbook -i windows_hosts.ini ansible/windows/install_windows_exporter.yml```
