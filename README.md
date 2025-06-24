@@ -32,3 +32,11 @@ Install Windows Exporter (allow connections for 9182 port):
 
 Or install using ansible:
 ```ansible-playbook -i windows_hosts.ini ansible/windows/install_windows_exporter.yml```
+
+Install on certain host:
+```ansible-playbook -i windows_hosts.ini ansible/windows/install_windows_exporter.yml --limit win-server1```
+
+Redefine cli vars:
+```ansible-playbook -i windows_hosts.ini ansible/windows/install_windows_exporter.yml -e "exporter_port=9192"```
+
+To set up WinRM run ansible/windows/help/winrm.ps1
