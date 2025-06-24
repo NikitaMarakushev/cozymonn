@@ -10,3 +10,7 @@ scrape_configs:
     static_configs:
       - targets: ['cadvisor:8080']
     metrics_path: /metrics
+
+  - job_name: 'windows'
+    file_sd_configs:
+      - files: [ '/etc/prometheus/windows_targets.yml' ]

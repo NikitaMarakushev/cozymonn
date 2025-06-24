@@ -1,0 +1,23 @@
+---
+- name: Install and configure Windows Exporter
+  hosts: windows
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Download Windows Exporter
+      win_get_url:
+        url: "https://github.com/prometheus-community/windows_exporter/releases/download/v{{ exporter_version }}/windows_exporter-{{ exporter_version }}-amd64.msi"
+        dest: "C:\\Temp\\windows_exporter.msi"
+
+    - name: Install Windows Exporter
+      win_package:
+        path: "C:\\Temp\\windows_exporter.msi"
+        arguments: "ENABLED_COLLECTORS={{ collectors }} LISTEN_PORT={{ exporter_port }}"
+        state: present
+
+    - name: Ensure Windows Exporter service is running
+      win_service:
+        name: "windows_exporter"
+        state: started
+        start_mode: auto

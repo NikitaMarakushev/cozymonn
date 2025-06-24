@@ -1,0 +1,3 @@
+exporter_version: "0.24.0"
+exporter_port: "9182"
+collectors: "cpu,memory,net,logical_disk,os,service"
